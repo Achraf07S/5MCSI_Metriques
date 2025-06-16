@@ -23,8 +23,18 @@ def meteo():
     results = []
     for list_element in json_content.get('list', []):
         dt_value = list_element.get('dt')
-        temp_day_value = list_element.get('main', {}).get('temp') - 273.15 # Conversion de Kelvin en °c 
-        results.append({'Jour': dt_value, 'temp': temp_day_value})
+        temp_kelvin = list_element.get('main', {}).get('temp')
+        
+        if dt_value is not None and temp_kelvin is not None:
+            temp_celsius = temp_kelvin - 273.15
+            dt_object = datetime.fromtimestamp(dt_value, datetime.UTC)
+
+            if dt_object.date() == today:
+                results.append({
+                    'Jour': dt_object.strftime('%Y-%m-%d %H:%M:%S'),
+                    'temp': round(temp_celsius, 2)
+            })
+
     return jsonify(results=results)
   
 if __name__ == "__main__":
