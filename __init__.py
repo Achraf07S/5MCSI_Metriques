@@ -27,7 +27,7 @@ def meteo():
         
         if dt_value is not None and temp_kelvin is not None:
             temp_celsius = temp_kelvin - 273.15
-            dt_object = datetime.fromtimestamp(dt_value, datetime.UTC)
+            dt_object = datetime.utcfromtimestamp(dt_value)
 
             if dt_object.date() == today:
                 results.append({
