@@ -1,12 +1,11 @@
-from flask import Flask, render_template_string, render_template, jsonify
-from flask import render_template
-from flask import json
-from datetime import datetime
+from flask import Flask, render_template, jsonify
 from urllib.request import urlopen
-import sqlite3
-#commit                                                                                                                                       
-app = Flask(__name__)                                                                                                                  
-                                                                                                                                       
+from datetime import datetime
+from collections import Counter
+import json
+
+app = Flask(__name__)
+
 @app.route('/')
 def hello_world():
     return render_template('hello.html')
@@ -40,25 +39,17 @@ def meteo():
 @app.route("/rapport/")
 def mongraphique():
     return render_template("graphique.html")
-  
+
 @app.route("/histogramme/")
 def histogramme():
     return render_template("histogramme.html")
 
-from flask import Flask, render_template, jsonify
-import requests
-from datetime import datetime
-from collections import Counter
-
-app = Flask(__name__)
-
-@app.route('/commits/')
-def commits():
+@app.route('/commits/data/')
+def commits_data():
     url = 'https://api.github.com/repos/OpenRSI/5MCSI_Metriques/commits'
-    response = requests.get(url)
-    data = response.json()
+    response = urlopen(url)
+    data = json.loads(response.read().decode('utf-8'))
 
-    # Extraction des minutes des commits
     minutes_list = []
     for commit in data:
         commit_date = commit.get('commit', {}).get('author', {}).get('date')
@@ -67,12 +58,11 @@ def commits():
             minutes_list.append(date_object.minute)
 
     counter = Counter(minutes_list)
-    # Transformation pour le graphique
-    minutes = sorted(counter.keys())
-    counts = [counter[m] for m in minutes]
+    return jsonify(counter)
 
-    return render_template('commits.html', minutes=minutes, counts=counts)
+@app.route('/commits/')
+def commits_page():
+    return render_template('commits.html')
 
-  
 if __name__ == "__main__":
-  app.run(debug=True)
+    app.run(debug=True)
