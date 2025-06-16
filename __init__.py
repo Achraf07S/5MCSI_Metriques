@@ -21,22 +21,22 @@ def meteo():
     raw_content = response.read()
     json_content = json.loads(raw_content.decode('utf-8'))
     results = []
-    ajrd = datetime.utcnow().date()
+
     for list_element in json_content.get('list', []):
         dt_value = list_element.get('dt')
         temp_kelvin = list_element.get('main', {}).get('temp')
-        
+
         if dt_value is not None and temp_kelvin is not None:
             temp_celsius = temp_kelvin - 273.15
             dt_object = datetime.utcfromtimestamp(dt_value)
 
-            if dt_object.date() == ajrd:
-                results.append({
-                    'Jour': dt_object.strftime('%Y-%m-%d %H:%M:%S'),
-                    'temp': round(temp_celsius, 2)
+            results.append({
+                'Jour': dt_object.strftime('%Y-%m-%d %H:%M:%S'),
+                'temp': round(temp_celsius, 2)
             })
 
     return jsonify(results=results)
+
   
 if __name__ == "__main__":
   app.run(debug=True)
