@@ -44,7 +44,7 @@ def mongraphique():
 def histogramme():
     return render_template("histogramme.html")
 
-@app.route('/commits/')
+@app.route('/commits_rapport')
 def commits_data():
     url = 'https://api.github.com/repos/OpenRSI/5MCSI_Metriques/commits'
     response = urlopen(url)
@@ -61,7 +61,7 @@ def commits_data():
     return jsonify(counter)
 
 @app.route('/commits/')
-def commits_page():
+def commits():
     return render_template('commits.html')
 
 if __name__ == "__main__":
