@@ -1,7 +1,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Commits</title>
+    <title>Metrique</title>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   </head>
   <body>
@@ -21,14 +21,14 @@
     });
     // Configurer les options du graphique en ligne
     var options = {
-      title: 'Nombre de commits par minute',
+      title: 'Évolution des températures de la ville de Tawarano',
       curveType: 'function',
       legend: { position: 'bottom' }
     };
     var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
     chart.draw(dataTable, options);
   }
-  // Récupération de données depuis notre API /commits/
+  // Récupération de données depuis notre API /tawarano/
   fetch('/commits_rapport/')
     .then(response => response.json())
     .then(data => {
