@@ -21,10 +21,11 @@
     });
     // Configurer les options du graphique en ligne
     var options = {
-      title: 'Évolution des températures de la ville de Tawarano',
-      curveType: 'function',
-      legend: { position: 'bottom' }
-    };
+              title: 'Nombre de commits par minute',
+              legend: { position: 'none' },
+              hAxis: { title: 'Minute' },
+              vAxis: { title: 'Nombre de commits', minValue: 0 }
+            };
     var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
     chart.draw(dataTable, options);
   }
