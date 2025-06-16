@@ -20,6 +20,7 @@ def meteo():
     response = urlopen('https://samples.openweathermap.org/data/2.5/forecast?lat=0&lon=0&appid=xxx')
     raw_content = response.read()
     json_content = json.loads(raw_content.decode('utf-8'))
+      ajrd = datetime.utcnow().date()
     results = []
     for list_element in json_content.get('list', []):
         dt_value = list_element.get('dt')
@@ -29,7 +30,7 @@ def meteo():
             temp_celsius = temp_kelvin - 273.15
             dt_object = datetime.utcfromtimestamp(dt_value)
 
-            if dt_object.date() == today:
+            if dt_object.date() == ajrd:
                 results.append({
                     'Jour': dt_object.strftime('%Y-%m-%d %H:%M:%S'),
                     'temp': round(temp_celsius, 2)
